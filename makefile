@@ -1,5 +1,5 @@
 build:
-	go build -i -o ./build/main ./cmd/naivecoin/main.go -r ace
+	go build -i -o ./build/main -race ./cmd/naivecoin-go/main.go 
 
 clean:
 	rm -rf ./build
