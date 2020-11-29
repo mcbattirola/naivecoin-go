@@ -24,7 +24,7 @@ func TestGenerateNextBlock(t *testing.T) {
 	latestBlock := getLatestBlock()
 
 	newBlockData := "my new block"
-	newBlock := generateNextBlock(newBlockData)
+	newBlock := GenerateNextBlock(newBlockData)
 
 	if newBlock.Index != latestBlock.Index+1 {
 		t.Errorf("New block's index must be the latest block's index plus one, but found latest index %d and new index %d.", newBlock.Index, latestBlock.Index)
@@ -85,7 +85,7 @@ func TestIsValidChain(t *testing.T) {
 
 	chainWithUnorderedIndexes := make([]block, 3)
 	chainWithUnorderedIndexes[0] = genesisBlock
-	chainWithUnorderedIndexes[1] = generateNextBlock("second block")
+	chainWithUnorderedIndexes[1] = GenerateNextBlock("second block")
 
 	newBlockTimestamp := time.Now().UnixNano()
 	newBlockData := "new data"

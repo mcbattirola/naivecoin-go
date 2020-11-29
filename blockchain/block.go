@@ -7,11 +7,11 @@ import (
 )
 
 type block struct {
-	Index        int64
-	Hash         string
-	PreviousHash string
-	Timestamp    int64
-	Data         string
+	Index        int64  `json:"index"`
+	Hash         string `json:"hash"`
+	PreviousHash string `json:"previous_hash"`
+	Timestamp    int64  `json:"timestamp"`
+	Data         string `json:"data"`
 }
 
 func calculateHash(index int64, previousHash string, timestamp int64, data string) string {
@@ -20,7 +20,7 @@ func calculateHash(index int64, previousHash string, timestamp int64, data strin
 	return fmt.Sprintf("%x", bytes)
 }
 
-func generateNextBlock(data string) block {
+func GenerateNextBlock(data string) block {
 	previousBlock := getLatestBlock()
 
 	nextIndex := previousBlock.Index + 1

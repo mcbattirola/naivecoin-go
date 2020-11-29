@@ -9,12 +9,12 @@ var genesisBlock = block{
 
 var blockchain = []block{genesisBlock}
 
-func getBlockchain() []block {
+func GetBlockchain() []block {
 	return blockchain
 }
 
 func getLatestBlock() block {
-	return blockchain[len(blockchain)-1]
+	return GetBlockchain()[len(blockchain)-1]
 }
 
 func isValidChainGenesisBlock(blockchainToValidate []block) bool {
@@ -45,7 +45,7 @@ func isValidChain(blockchainToValidate []block) bool {
 }
 
 func replaceChain(newBlocks []block) {
-	if isValidChain(newBlocks) && len(newBlocks) > len(getBlockchain()) {
+	if isValidChain(newBlocks) && len(newBlocks) > len(GetBlockchain()) {
 		blockchain = newBlocks
 		// broadcastLatest()
 	}
