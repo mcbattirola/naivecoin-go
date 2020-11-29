@@ -1,5 +1,10 @@
 package blockchain
 
+import (
+	"fmt"
+	"strings"
+)
+
 var genesisBlock = block{
 	Index:     0,
 	Hash:      "816534932c2b7154836da6afc367695e6337db8a921823784c14378abed4f7d7",
@@ -16,6 +21,13 @@ func GetBlockchain() []block {
 
 func getLatestBlock() block {
 	return GetBlockchain()[len(blockchain)-1]
+}
+
+func hashMatchesDificulty(hash string, difficulty int) bool {
+	hashInBinary := getBinaryRepresentation(hash)
+	requiredPrefix := strings.Repeat("0", difficulty)
+
+	return strings.HasPrefix(hashInBinary, requiredPrefix)
 }
 
 func isValidChainGenesisBlock(blockchainToValidate []block) bool {
@@ -50,4 +62,12 @@ func replaceChain(newBlocks []block) {
 		blockchain = newBlocks
 		// broadcastLatest()
 	}
+}
+
+func getBinaryRepresentation(inputString string) string {
+	binString := ""
+	for _, char := range inputString {
+		binString = fmt.Sprintf("%s%b", binString, char)
+	}
+	return binString
 }

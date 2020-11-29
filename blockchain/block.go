@@ -12,6 +12,8 @@ type block struct {
 	PreviousHash string `json:"previous_hash"`
 	Timestamp    int64  `json:"timestamp"`
 	Data         string `json:"data"`
+	Difficulty   int32  `json:"difficulty"`
+	Nounce       string `json:"Nounce"`
 }
 
 func calculateHash(index int64, previousHash string, timestamp int64, data string) string {
