@@ -7,10 +7,11 @@ import (
 	"github.com/mcbattirola/naivecoin-go/p2p"
 )
 
-type PeerDTO struct {
-	url string `json:"url"`
+type peerDTO struct {
+	URL string `json:"url"`
 }
 
+// GetPeers return all current available peers
 func GetPeers(c *gin.Context) {
 	sockets := p2p.GetSockets()
 
@@ -19,13 +20,14 @@ func GetPeers(c *gin.Context) {
 	})
 }
 
+// AddPeer initiates a connection with the peers
 func AddPeer(c *gin.Context) {
-	var input PeerDTO
+	var input peerDTO
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	err := p2p.ConnectToPeers(input.url)
+	err := p2p.ConnectToPeers(input.URL)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{

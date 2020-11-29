@@ -20,6 +20,8 @@ func calculateHash(index int64, previousHash string, timestamp int64, data strin
 	return fmt.Sprintf("%x", bytes)
 }
 
+// GenerateNextBlock returns a block out of the input data,
+// given the current state of the blockchain
 func GenerateNextBlock(data string) block {
 	previousBlock := getLatestBlock()
 

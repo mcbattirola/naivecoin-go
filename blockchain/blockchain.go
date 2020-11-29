@@ -9,6 +9,7 @@ var genesisBlock = block{
 
 var blockchain = []block{genesisBlock}
 
+// GetBlockchain returns current blockchain
 func GetBlockchain() []block {
 	return blockchain
 }
