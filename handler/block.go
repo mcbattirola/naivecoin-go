@@ -8,7 +8,8 @@ import (
 )
 
 type blockDTO struct {
-	Data string `json:"data" binding:"required"`
+	Data  string `json:"data" binding:"required"`
+	Nonce string `json:"nonce" binding:"required"`
 }
 
 // GetBlocks returns all the blocks in the blockchain
@@ -27,6 +28,6 @@ func MineBlock(c *gin.Context) {
 	}
 
 	c.JSON(200, gin.H{
-		"block": blockchain.GenerateNextBlock(input.Data),
+		"block": blockchain.GenerateNextBlock(input.Data, input.Nonce),
 	})
 }

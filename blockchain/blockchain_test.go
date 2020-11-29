@@ -50,14 +50,14 @@ func TestIsValidChain(t *testing.T) {
 
 	chainWithUnorderedIndexes := make([]block, 3)
 	chainWithUnorderedIndexes[0] = genesisBlock
-	chainWithUnorderedIndexes[1] = GenerateNextBlock("second block")
+	chainWithUnorderedIndexes[1] = GenerateNextBlock("second block", 0)
 
 	newBlockTimestamp := time.Now().UnixNano()
 	newBlockData := "new data"
 
 	chainWithUnorderedIndexes[2] = block{
 		Index:        0,
-		Hash:         calculateHash(0, chainWithUnorderedIndexes[1].Hash, newBlockTimestamp, newBlockData),
+		Hash:         calculateHash(0, chainWithUnorderedIndexes[1].Hash, newBlockTimestamp, newBlockData, 0, 0),
 		PreviousHash: chainWithUnorderedIndexes[1].Hash,
 		Timestamp:    newBlockTimestamp,
 		Data:         newBlockData,
@@ -71,7 +71,7 @@ func TestIsValidChain(t *testing.T) {
 	chainWithIncorrectHashes[0] = genesisBlock
 	chainWithIncorrectHashes[1] = block{
 		Index:        1,
-		Hash:         calculateHash(0, chainWithIncorrectHashes[0].Hash, newBlockTimestamp, newBlockData),
+		Hash:         calculateHash(0, chainWithIncorrectHashes[0].Hash, newBlockTimestamp, newBlockData, 0, 0),
 		PreviousHash: chainWithIncorrectHashes[0].Hash + "something",
 		Timestamp:    newBlockTimestamp,
 		Data:         newBlockData,
@@ -82,25 +82,25 @@ func TestIsValidChain(t *testing.T) {
 	}
 }
 
-func TestHashMatchesDificulty(t *testing.T) {
+func TestHashMatchesDifficulty(t *testing.T) {
 
-	if !hashMatchesDificulty(string([]byte{0}), 1) {
+	if !hashMatchesDifficulty(string([]byte{0}), 1) {
 		t.Errorf("Expected string '0' to match dificulty 1")
 	}
 
-	if hashMatchesDificulty(string([]byte{0, 65, 66, 67, 0, 0}), 2) {
+	if hashMatchesDifficulty(string([]byte{0, 65, 66, 67, 0, 0}), 2) {
 		t.Errorf("Expected string '0' NOT to match dificulty 1")
 	}
 
-	if hashMatchesDificulty(string([]byte{0, 0, 0, 65, 65}), 5) {
+	if hashMatchesDifficulty(string([]byte{0, 0, 0, 65, 65}), 5) {
 		t.Errorf("Expected string prefixed with '000' NOT to match dificulty 5")
 	}
 
-	if !hashMatchesDificulty(string([]byte{0, 0, 0}), 2) {
+	if !hashMatchesDifficulty(string([]byte{0, 0, 0}), 2) {
 		t.Errorf("Expected string prefixed with '000' to match dificulty 2")
 	}
 
-	if !hashMatchesDificulty(string([]byte{0, 0, 0}), 3) {
+	if !hashMatchesDifficulty(string([]byte{0, 0, 0}), 3) {
 		t.Errorf("Expected string prefixed with '000' to match dificulty 3")
 	}
 

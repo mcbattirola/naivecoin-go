@@ -12,24 +12,24 @@ type block struct {
 	PreviousHash string `json:"previous_hash"`
 	Timestamp    int64  `json:"timestamp"`
 	Data         string `json:"data"`
-	Difficulty   int32  `json:"difficulty"`
-	Nounce       string `json:"Nounce"`
+	Difficulty   int    `json:"difficulty"`
+	Nonce        int32  `json:"nonce"`
 }
 
-func calculateHash(index int64, previousHash string, timestamp int64, data string) string {
-	blockString := fmt.Sprintf("%d%s%d%s", index, previousHash, timestamp, data)
+func calculateHash(index int64, previousHash string, timestamp int64, data string, difficulty int, nonce int32) string {
+	blockString := fmt.Sprintf("%d%s%d%s%d%d", index, previousHash, timestamp, data, difficulty, nonce)
 	bytes := sha256.Sum256([]byte(blockString))
 	return fmt.Sprintf("%x", bytes)
 }
 
 // GenerateNextBlock returns a block out of the input data,
 // given the current state of the blockchain
-func GenerateNextBlock(data string) block {
+func GenerateNextBlock(data string, nonce int32) block {
 	previousBlock := getLatestBlock()
 
 	nextIndex := previousBlock.Index + 1
 	nextTimestamp := time.Now().UnixNano()
-	nextHash := calculateHash(nextIndex, previousBlock.Hash, nextTimestamp, data)
+	nextHash := calculateHash(nextIndex, previousBlock.Hash, nextTimestamp, data, 0, nonce)
 
 	return block{
 		Index:        nextIndex,
@@ -47,9 +47,16 @@ func isValidNewBlock(newBlock block, previousBlock block) bool {
 	if newBlock.PreviousHash != previousBlock.Hash {
 		return false
 	}
-	if newBlock.Hash != calculateHash(newBlock.Index, newBlock.PreviousHash, newBlock.Timestamp, newBlock.Data) {
+	if newBlock.Hash != calculateHash(newBlock.Index, newBlock.PreviousHash, newBlock.Timestamp, newBlock.Data, 0, 0) {
+		return false
+	}
+	if !isValidTimestamp(newBlock, previousBlock) {
 		return false
 	}
 
 	return true
+}
+
+func isValidTimestamp(newBlock block, previousBlock block) bool {
+	return (previousBlock.Timestamp-60 < newBlock.Timestamp) && (newBlock.Timestamp-60 < time.Now().UnixNano())
 }
