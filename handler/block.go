@@ -9,7 +9,7 @@ import (
 
 type blockDTO struct {
 	Data  string `json:"data" binding:"required"`
-	Nonce string `json:"nonce" binding:"required"`
+	Nonce int32  `json:"nonce" binding:"required"`
 }
 
 // GetBlocks returns all the blocks in the blockchain
